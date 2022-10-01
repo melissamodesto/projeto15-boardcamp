@@ -17,7 +17,7 @@ export async function postCategory(req, res) {
       "INSERT INTO categories (name) VALUES ($1) RETURNING *",
       [name]
     );
-    res.send(category.rows[0]);
+    res.status(201).send(category.rows[0]);
   } catch (err) {
     res.sendStatus(500);
   }

@@ -8,14 +8,14 @@ import {
   postCategory,
 } from "../controllers/categories.controller.js";
 
-const router = Router();
+const categoriesRouter = Router();
 
-router.get("/categories", getCategories);
-router.post(
+categoriesRouter.get("/categories", getCategories);
+categoriesRouter.post(
   "/categories",
   validateCategory,
   validateUniqueCategory,
   postCategory
 );
 
-export default router;
+export default categoriesRouter;
