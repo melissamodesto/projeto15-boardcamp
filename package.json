@@ -1,0 +1,27 @@
+{
+  "name": "projeto15-boardcamp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/melissamodesto/projeto15-boardcamp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/melissamodesto/projeto15-boardcamp/issues"
+  },
+  "homepage": "https://github.com/melissamodesto/projeto15-boardcamp#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "joi": "^17.6.2",
+    "pg": "^8.8.0"
+  }
+}
