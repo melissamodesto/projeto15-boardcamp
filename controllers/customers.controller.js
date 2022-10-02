@@ -2,16 +2,26 @@ import db from "../database/db";
 
 export async function getCustomers(req, res) {
   const { queryObject } = res.locals;
-  const result = await db.query(queryObject);
-  res.send(result.rows);
+  try {
+    const result = await db.query(queryObject);
+    res.send(result.rows);
+  } catch (error) {
+    res.sendStatus(500);
+  }
 }
 
 export async function getCustomerById(req, res) {
   const { queryObject } = res.locals;
   const result = await db.query(queryObject);
 
-  if (result.rows.length) {
-    res.send(result.rows[0]);
+  try {
+    const result = await db.query(queryObject);
+
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    res.send(result.rows);
+  } catch (error) {
+    res.sendStatus(500);
   }
 
   res.sendStatus(404);
@@ -33,11 +43,13 @@ export async function postCustomer(req, res) {
 
 export async function putCustomer(req, res) {
   const { queryObject } = res.locals;
-  const result = await query(queryObject);
+  try {
+    const result = await db.query(queryObject);
 
-  if (result.rows.length) {
-    return res.sendStatus(404);
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
   }
-
-  res.sendStatus(200);
 }

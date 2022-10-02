@@ -13,10 +13,16 @@ import {
   postNewCustomer,
   putCustomer,
 } from "../controllers/customer.controller.js";
+import { setOrderQuery } from "../middlewares/common.middleware.js";
 
 const customerRouter = Router();
 
-customerRouter.get("/customers", setSearchQueryObject, getCustomers);
+customersRouter.get(
+  "/customers",
+  setOrderQuery,
+  setSearchQueryObject,
+  getCustomers
+);
 customerRouter.get("/customers/:id", getCustomersById);
 customerRouter.post(
   "/customers",
