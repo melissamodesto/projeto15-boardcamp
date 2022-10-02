@@ -1,9 +1,13 @@
 import db from "../database/db";
 
 export async function getGames(req, res) {
+  const { name } = req.query;
+
   try {
-    const games = await db.query("SELECT * FROM games");
-    res.send(games.rows);
+    const { queryObject } = res.locals;
+    const result = await db.query(queryObject);
+
+    res.send(result.rows);
   } catch (err) {
     res.sendStatus(500);
   }
@@ -19,6 +23,8 @@ export async function postGame(req, res) {
     );
     res.status(201).send(game.rows[0]);
   } catch (err) {
+    if (err.code === "23505") return res.sendStatus(409);
+
     res.sendStatus(500);
   }
 }

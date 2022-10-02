@@ -36,7 +36,7 @@ export async function validadeUniqueGame(req, res, next) {
     const game = await db.query('SELECT * FROM games WHERE "categoryId" = $1', [
       categoryId,
     ]);
-    if (game.rows.length) {
+    if (game.rowCount > 0) {
       res.sendStatus(409);
     } else {
       next();
@@ -44,4 +44,18 @@ export async function validadeUniqueGame(req, res, next) {
   } catch (err) {
     res.sendStatus(500);
   }
+}
+
+export async function setSearchQueryObject(req, res, next) {
+  const { name } = req.query;
+
+  const text = `SELECT games.*, categories.name as categoryName
+  FROM categories 
+  JOIN games ON games."categoryId" = categories.id
+  WHERE games.name ILIKE $1
+  `;
+  const values = [name ? `%${name}%` : "%"];
+
+  res.locals.queryObject = { text, values };
+  next();
 }

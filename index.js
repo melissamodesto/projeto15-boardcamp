@@ -4,6 +4,7 @@ import cors from "cors";
 
 import categoriesRouter from "./routers/categories.router.js";
 import gameRouter from "./routers/game.router.js";
+import customerRouter from "./routers/customer.router.js";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.use(categoriesRouter);
 app.use(gameRouter);
+app.use(customerRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT || 4000}`);
