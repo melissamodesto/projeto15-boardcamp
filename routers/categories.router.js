@@ -7,11 +7,11 @@ import {
   getCategories,
   postCategory,
 } from "../controllers/categories.controller.js";
-import { setOrderQuery } from "../middlewares/common.middleware.js";
+import { setQueryOptionsFromQueryStrings } from "../middlewares/common.middleware.js";
 
 const categoriesRouter = Router();
 
-categoriesRouter.get("/categories", setOrderQuery, getCategories);
+categoriesRouter.get("/categories", setQueryOptionsFromQueryStrings, getCategories);
 categoriesRouter.post(
   "/categories",
   validateCategory,

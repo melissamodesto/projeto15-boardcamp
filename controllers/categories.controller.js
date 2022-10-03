@@ -2,9 +2,9 @@ import db from "../database/db";
 
 export async function getCategories(req, res) {
   try {
-    const { orderQuery } = res.locals;
+    const { queryOptions } = res.locals;
 
-    const text = `SELECT * FROM categories ${orderQuery}`;
+    const text = `SELECT * FROM categories ${queryOptions}`;
 
     try {
       const result = await db.query(text);

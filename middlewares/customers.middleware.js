@@ -38,7 +38,7 @@ export async function setSearchQueryObject(req, res, next) {
   const { cpf } = req.query;
   const { id } = req.params;
 
-  const { orderQuery } = res.locals;
+  const { queryOptions } = res.locals;
   let where = "";
   const values = [];
 
@@ -56,7 +56,7 @@ export async function setSearchQueryObject(req, res, next) {
     return res.sendStatus(400);
   }
 
-  const text = `SELECT * FROM customers ${where} ${orderQuery}`;
+  const text = `SELECT * FROM customers ${where} ${queryOptions}`;
 
   res.locals.queryObject = { text, values };
   next();

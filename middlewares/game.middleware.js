@@ -49,13 +49,19 @@ export async function validadeUniqueGame(req, res, next) {
 export async function setSearchQueryObject(req, res, next) {
   const { name } = req.query;
 
-  const { orderQuery } = req.locals;
+  const { queryOptions } = req.locals;
 
-  const text = `SELECT games.*, categories.name as categoryName
+  const text = `SELECT 
+  games.*, 
+  categories.name as categoryName, 
+  count(rentals."rentDate") as "rentalsCount"
   FROM categories 
   JOIN games ON games."categoryId" = categories.id
-  WHERE games.name ILIKE $1 ${orderQuery}
-  `;
+  JOIN rentals on rentals."gameId" = games.id
+  WHERE games.name ILIKE $1
+  group by games.id, categories.name
+  ${queryOptions}`
+
   const values = [name ? `%${name}%` : "%"];
 
   res.locals.queryObject = { text, values };

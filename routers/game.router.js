@@ -4,13 +4,13 @@ import {
   validateUniqueGame,
   setSearchQueryObject,
 } from "../middlewares/game.middleware.js";
-import { setOrderQuery } from "../middlewares/common.middleware.js";
+import { setQueryOptionsFromQueryStrings } from "../middlewares/common.middleware.js";
 
 import { getGames, postGame } from "../controllers/game.controller.js";
 
 const gameRouter = Router();
 
-gameRouter.get("/games", setOrderQuery, setSearchQueryObject, getGames);
+gameRouter.get("/games", setQueryOptionsFromQueryStrings, setSearchQueryObject, getGames);
 gameRouter.post("/games", validateGame, validateUniqueGame, postGame);
 
 export default gameRouter;

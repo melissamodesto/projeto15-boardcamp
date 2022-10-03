@@ -52,10 +52,12 @@ export async function validateExistingCostumerAndGame(req, res, next) {
 }
 
 export async function setSearchQueryObject(req, res, next) {
-  const { customerId, gameId } = req.query;
-  const { orderQuery } = res.locals;
+  const { customerId, gameId, status } = req.query;
+  const { queryOptions } = res.locals;
 
   let where = "";
+  let statusText = "";
+  let startDateText = "";
   const values = [];
 
   if (customerId) {
@@ -70,6 +72,13 @@ export async function setSearchQueryObject(req, res, next) {
     where = `WHERE rentals."customerId" = $1 AND rentals."gameId" = $2`;
   }
 
+  if (status === "open") {
+    statusText = `AND rentals."returnDate" IS NULL`
+  }
+  if (status === "closed") {
+    statusText = `AND rentals."returnDate" IS NOT NULL`
+  }
+
   const text = `SELECT 
   rentals.*, 
   customers.id AS customer_id, 
@@ -82,8 +91,8 @@ export async function setSearchQueryObject(req, res, next) {
   JOIN customers ON rentals."customerId" = customers.id
   JOIN games on rentals."gameId" = games.id
   JOIN categories on games."categoryId" = categories.id
-  ${where} 
-  ${orderQuery}
+  ${where}${statusText}
+  ${queryOptions}
   `;
 
   res.locals.queryObject = { text, values };

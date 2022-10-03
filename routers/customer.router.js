@@ -13,13 +13,13 @@ import {
   postNewCustomer,
   putCustomer,
 } from "../controllers/customer.controller.js";
-import { setOrderQuery } from "../middlewares/common.middleware.js";
+import { setQueryOptionsFromQueryStrings } from "../middlewares/common.middleware.js";
 
 const customerRouter = Router();
 
-customersRouter.get(
+customerRouter.get(
   "/customers",
-  setOrderQuery,
+  setQueryOptionsFromQueryStrings,
   setSearchQueryObject,
   getCustomers
 );
