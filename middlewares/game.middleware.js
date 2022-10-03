@@ -2,16 +2,9 @@ import db from "../database/db";
 import { newGameSchema } from "../schemas/newGame.schema.js";
 
 export async function validateGame(req, res, next) {
-  const { name, image, stockTotal, categoryId, pricePerDay } = req.body;
 
   try {
-    await newGameSchema.validateAsync({
-      name,
-      image,
-      stockTotal,
-      categoryId,
-      pricePerDay,
-    });
+    await newGameSchema.validateAsync(req.body)
     next();
   } catch (err) {
     res.sendStatus(400);
@@ -25,8 +18,6 @@ export async function validadeUniqueGame(req, res, next) {
     const game = await db.query("SELECT * FROM games WHERE name = $1", [name]);
     if (game.rows.length) {
       res.sendStatus(409);
-    } else {
-      next();
     }
   } catch (err) {
     res.sendStatus(500);
@@ -38,12 +29,11 @@ export async function validadeUniqueGame(req, res, next) {
     ]);
     if (game.rowCount > 0) {
       res.sendStatus(409);
-    } else {
-      next();
     }
   } catch (err) {
     res.sendStatus(500);
   }
+  next();
 }
 
 export async function setSearchQueryObject(req, res, next) {
@@ -57,7 +47,7 @@ export async function setSearchQueryObject(req, res, next) {
   count(rentals."rentDate") as "rentalsCount"
   FROM categories 
   JOIN games ON games."categoryId" = categories.id
-  JOIN rentals on rentals."gameId" = games.id
+  LEFT JOIN rentals on rentals."gameId" = games.id
   WHERE games.name ILIKE $1
   group by games.id, categories.name
   ${queryOptions}`

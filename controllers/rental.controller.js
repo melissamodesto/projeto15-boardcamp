@@ -25,6 +25,10 @@ function formatRentalData(rawData) {
 
     primaryData.rentDate = primaryData.rentDate.toISOString().slice(0, 10);
 
+    if(returnDate) {
+      primaryData.returnDate = primaryData.returnDate.toISOString().slice(0, 10);
+    }
+
     return { ...primaryData, customer, game };
   });
 }
@@ -72,7 +76,6 @@ export async function postNewRental(req, res) {
 export async function setRentalAsFinished(req, res) {
   const { id } = req.params;
   let returnDate = getTodayInStringYYYYMMDD();
-  console.log("returnDate", returnDate);
 
   try {
     const result = await db.query(
@@ -83,7 +86,6 @@ export async function setRentalAsFinished(req, res) {
     );
     res.sendStatus(200);
   } catch (err) {
-    console.log(err);
     res.sendStatus(500);
   }
 }

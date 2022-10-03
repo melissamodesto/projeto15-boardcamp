@@ -23,7 +23,7 @@ customerRouter.get(
   setSearchQueryObject,
   getCustomers
 );
-customerRouter.get("/customers/:id", getCustomersById);
+customerRouter.get("/customers/:id", setQueryOptionsFromQueryStrings, setSearchQueryObject, getCustomersById);
 customerRouter.post(
   "/customers",
   validateCustomer,

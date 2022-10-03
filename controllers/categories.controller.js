@@ -1,17 +1,14 @@
 import db from "../database/db";
 
 export async function getCategories(req, res) {
+
+  const { queryOptions } = res.locals;
+  const text = `SELECT * FROM categories ${queryOptions}`;
+
   try {
-    const { queryOptions } = res.locals;
+    const result = await db.query(text);
+    res.send(result.rows);
 
-    const text = `SELECT * FROM categories ${queryOptions}`;
-
-    try {
-      const result = await db.query(text);
-      res.send(result.rows);
-    } catch (err) {
-      res.sendStatus(500);
-    }
   } catch (err) {
     res.sendStatus(500);
   }
@@ -27,6 +24,8 @@ export async function postCategory(req, res) {
     );
     res.sendStatus(201);
   } catch (err) {
-    if (err.code === "23505") return res.sendStatus(500);
+    if (err.code === "23505") return res.sendStatus(409);
+
+    res.sendStatus(500);
   }
 }
