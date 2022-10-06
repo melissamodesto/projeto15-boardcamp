@@ -5,16 +5,16 @@ import {
   validateAvailableGame,
   setSearchQueryObject,
   validateExistingRental,
-} from "../middlewares/rental.middleware.js";
+} from '../middlewares/rental.middleware.js';
 
 import {
   getRentals,
   postNewRental,
   setRentalAsFinished,
   deleteRental,
-} from "../controllers/rental.controller.js";
+} from '../controllers/rental.controller.js';
 
-import { setQueryOptionsFromQueryStrings } from "../middlewares/common.middleware.js";
+import { setQueryOptionsFromQueryStrings } from '../middlewares/common.middleware.js';
 
 const rentalsRouter = Router();
 

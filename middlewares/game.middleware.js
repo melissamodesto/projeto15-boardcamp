@@ -11,7 +11,7 @@ export async function validateGame(req, res, next) {
   }
 }
 
-export async function validadeUniqueGame(req, res, next) {
+export async function validateUniqueGame(req, res, next) {
   const { name, categoryId } = req.body;
 
   try {

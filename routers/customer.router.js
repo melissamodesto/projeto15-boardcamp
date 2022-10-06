@@ -5,15 +5,15 @@ import {
   validateCpfConflictUpdate,
   setSearchQueryObject,
   setUpdateQueryObject,
-} from "../middlewares/customer.middleware.js";
+} from '../middlewares/customers.middleware.js';
 
 import {
   getCustomers,
   getCustomersById,
-  postNewCustomer,
+  postCustomer,
   putCustomer,
 } from "../controllers/customer.controller.js";
-import { setQueryOptionsFromQueryStrings } from "../middlewares/common.middleware.js";
+import { setQueryOptionsFromQueryStrings } from '../middlewares/common.middleware.js';
 
 const customerRouter = Router();
 
@@ -28,7 +28,7 @@ customerRouter.post(
   "/customers",
   validateCustomer,
   validateUniqueCustomer,
-  postNewCustomer
+  postCustomer
 );
 customerRouter.put(
   "/customers/:id",
