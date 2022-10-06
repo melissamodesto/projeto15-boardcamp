@@ -1,4 +1,4 @@
-export async function setOrderQuery(req, res, next) {
+export async function setQueryOptionsFromQueryStrings(req, res, next) {
   const { order, desc, offset, limit } = req.query
 
   let orderQuery = ""

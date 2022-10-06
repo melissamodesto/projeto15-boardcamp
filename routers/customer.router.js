@@ -12,7 +12,7 @@ import {
   getCustomersById,
   postCustomer,
   putCustomer,
-} from "../controllers/customer.controller.js";
+} from "../controllers/customers.controller.js";
 import { setQueryOptionsFromQueryStrings } from '../middlewares/common.middleware.js';
 
 const customerRouter = Router();

@@ -8,5 +8,5 @@ export const newCustomersSchema = Joi.object({
   cpf: Joi.string()
     .required()
     .pattern(/^[0-9]{11}$/),
-  birthday: Joi.date().required().isoDate(),
+  birthday: Joi.date().required(),
 });

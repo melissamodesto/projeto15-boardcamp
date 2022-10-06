@@ -11,7 +11,7 @@ export async function validateCustomer(req, res, next) {
   next();
 }
 
-export async function validadeUniqueCustomer(req, res, next) {
+export async function validateUniqueCustomer(req, res, next) {
   const { cpf } = req.body;
 
   try {
