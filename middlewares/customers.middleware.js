@@ -1,5 +1,5 @@
-import { newCustomersSchema } from "../schemas/newCustomers.schema";
-import db from "../database/db";
+import { newCustomersSchema } from '../schemas/newCustomers.schema.js';
+import db from "../database/db.js";
 
 export async function validateCustomer(req, res, next) {
 

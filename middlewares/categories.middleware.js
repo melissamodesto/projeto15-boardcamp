@@ -1,5 +1,5 @@
-import db from "../database/db";
-import { newCategorySchema } from "../schemas/newCategory.schema";
+import db from "../database/db.js";
+import { newCategorySchema } from "../schemas/newCategory.schema.js";
 
 export async function validateCategory(req, res, next) {
 

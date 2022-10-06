@@ -1,4 +1,4 @@
-import db from "../database/db";
+import db from "../database/db.js";
 
 function formatRentalData(rawData) {
   return rawData.map((rentalData) => {

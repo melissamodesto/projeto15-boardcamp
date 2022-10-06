@@ -1,5 +1,5 @@
 import db from "../database/db.js";
-import { newRentalSchema } from "../schemas/newRentalSchema.js";
+import { newRentalSchema } from '../schemas/newRental.schema.js';
 
 export async function validateRentalData(req, res, next) {
   try {

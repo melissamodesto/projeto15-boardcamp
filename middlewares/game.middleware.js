@@ -1,5 +1,5 @@
-import db from "../database/db";
-import { newGameSchema } from "../schemas/newGame.schema.js";
+import db from '../database/db.js';
+import { newGameSchema } from '../schemas/newGame.schema.js';
 
 export async function validateGame(req, res, next) {
 
