@@ -1,7 +1,8 @@
-import db from "../database/db";
+import db from "../database/db.js";
 
 export async function getCustomers(req, res) {
   const { queryObject } = res.locals;
+
   try {
     const result = await db.query(queryObject);
     res.send(result.rows);
@@ -10,10 +11,9 @@ export async function getCustomers(req, res) {
   }
 }
 
-export async function getCustomerById(req, res) {
+export async function getCustomersById(req, res) {
   const { queryObject } = res.locals;
-  const result = await db.query(queryObject);
-
+  
   try {
     const result = await db.query(queryObject);
 
@@ -23,8 +23,6 @@ export async function getCustomerById(req, res) {
   } catch (error) {
     res.sendStatus(500);
   }
-
-  res.sendStatus(404);
 }
 
 export async function postCustomer(req, res) {
@@ -37,6 +35,8 @@ export async function postCustomer(req, res) {
     );
     res.status(201).send(customer.rows[0]);
   } catch (err) {
+
+    if(err.code === '23505') return res.sendStatus(409);
     res.sendStatus(500);
   }
 }

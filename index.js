@@ -1,11 +1,11 @@
-import express from "express";
+import express from 'express';
 import dotenv from "dotenv";
 import cors from "cors";
 
 import categoriesRouter from "./routers/categories.router.js";
 import gameRouter from "./routers/game.router.js";
 import customerRouter from "./routers/customer.router.js";
-import rentalsRouter from "./routers/rentalsRouter.js";
+import rentalsRouter from './routers/rental.router.js';
 
 dotenv.config();
 

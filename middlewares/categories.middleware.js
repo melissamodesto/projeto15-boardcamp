@@ -1,29 +1,14 @@
-import db from "../database/db";
-import { newCategorySchema } from "../schemas/newCategory.schema";
+import db from "../database/db.js";
+import {newCategorySchema} from '../schemas/newCategory.schema.js';
 
 export async function validateCategory(req, res, next) {
-  const { name } = req.body;
 
   try {
-    const category = await db.query(
-      "SELECT * FROM categories WHERE name = $1",
-      [name]
-    );
-
-    if (category.rows.length) {
-      return res.sendStatus(409);
-    }
-
-    const { error } = newCategorySchema.validateAsync(req.body);
-
-    if (error) {
-      return res.sendStatus(400);
-    }
-
-    next();
+    await newCategorySchema.validateAsync(req.body);
   } catch (err) {
     res.sendStatus(500);
   }
+  next();
 }
 
 export async function validateUniqueCategory(req, res, next) {
@@ -35,12 +20,12 @@ export async function validateUniqueCategory(req, res, next) {
       [name]
     );
 
-    if (category.rows.length) {
+    if (category.rowCount > 0) {
       return res.sendStatus(409);
     }
 
-    next();
   } catch (err) {
     res.sendStatus(500);
   }
+  next();
 }

@@ -1,32 +1,23 @@
-import db from "../database/db";
-import { newGameSchema } from "../schemas/newGame.schema.js";
+import db from '../database/db.js';
+import { newGameSchema } from '../schemas/newGame.schema.js';
 
 export async function validateGame(req, res, next) {
-  const { name, image, stockTotal, categoryId, pricePerDay } = req.body;
 
   try {
-    await newGameSchema.validateAsync({
-      name,
-      image,
-      stockTotal,
-      categoryId,
-      pricePerDay,
-    });
+    await newGameSchema.validateAsync(req.body)
     next();
   } catch (err) {
     res.sendStatus(400);
   }
 }
 
-export async function validadeUniqueGame(req, res, next) {
+export async function validateUniqueGame(req, res, next) {
   const { name, categoryId } = req.body;
 
   try {
     const game = await db.query("SELECT * FROM games WHERE name = $1", [name]);
     if (game.rows.length) {
       res.sendStatus(409);
-    } else {
-      next();
     }
   } catch (err) {
     res.sendStatus(500);
@@ -38,24 +29,29 @@ export async function validadeUniqueGame(req, res, next) {
     ]);
     if (game.rowCount > 0) {
       res.sendStatus(409);
-    } else {
-      next();
     }
   } catch (err) {
     res.sendStatus(500);
   }
+  next();
 }
 
 export async function setSearchQueryObject(req, res, next) {
   const { name } = req.query;
 
-  const { orderQuery } = req.locals;
+  const { queryOptions } = req.locals;
 
-  const text = `SELECT games.*, categories.name as categoryName
+  const text = `SELECT 
+  games.*, 
+  categories.name as categoryName, 
+  count(rentals."rentDate") as "rentalsCount"
   FROM categories 
   JOIN games ON games."categoryId" = categories.id
-  WHERE games.name ILIKE $1 ${orderQuery}
-  `;
+  LEFT JOIN rentals on rentals."gameId" = games.id
+  WHERE games.name ILIKE $1
+  group by games.id, categories.name
+  ${queryOptions}`
+
   const values = [name ? `%${name}%` : "%"];
 
   res.locals.queryObject = { text, values };

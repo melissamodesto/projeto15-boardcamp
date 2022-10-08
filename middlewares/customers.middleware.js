@@ -1,54 +1,48 @@
-import { newCustomersSchema } from "../schemas/newCustomers.schema";
-import db from "../database/db";
+import { newCustomersSchema } from '../schemas/newCustomers.schema.js';
+import db from "../database/db.js";
 
 export async function validateCustomer(req, res, next) {
-  const { name, phone, cpf, birthday } = req.body;
 
   try {
-    await newCustomersSchema.validateAsync({
-      name,
-      phone,
-      cpf,
-      birthday,
-    });
-    next();
+    await newCustomersSchema.validateAsync(req.body);
   } catch (err) {
     res.sendStatus(400);
   }
+  next();
 }
 
-export async function validadeUniqueCustomer(req, res, next) {
+export async function validateUniqueCustomer(req, res, next) {
   const { cpf } = req.body;
 
   try {
     const customer = await db.query("SELECT * FROM customers WHERE cpf = $1", [
       cpf,
     ]);
-    if (customer.rows.length) {
+    if (customer.rowCount > 0) {
       res.sendStatus(409);
     } else {
-      next();
     }
   } catch (err) {
     res.sendStatus(500);
   }
+  next();
 }
 
 export async function setSearchQueryObject(req, res, next) {
   const { cpf } = req.query;
   const { id } = req.params;
 
-  const { orderQuery } = res.locals;
+  const { queryOptions } = res.locals;
   let where = "";
   const values = [];
 
   if (cpf) {
-    where = "WHERE cpf ILIKE $1";
+    where = "WHERE customers.cpf ILIKE $1";
     values.push(`%${cpf}%`);
   }
 
   if (id) {
-    where = "WHERE id = $1";
+    where = "WHERE customers.id = $1";
     values.push(id);
   }
 
@@ -56,7 +50,13 @@ export async function setSearchQueryObject(req, res, next) {
     return res.sendStatus(400);
   }
 
-  const text = `SELECT * FROM customers ${where} ${orderQuery}`;
+  const text = `SELECT customers.*,
+  count(rentals."rentDate") as "rentalsCount"
+  FROM customers
+  LEFT JOIN rentals on rentals."customerId" = customers.id
+  ${where}
+  GROUP BY customers.id
+  ${queryOptions}`
 
   res.locals.queryObject = { text, values };
   next();
@@ -90,9 +90,9 @@ export async function validateCpfConflictUpdate(req, res, next) {
     if (customer.rowCount > 0) {
       res.sendStatus(409);
     } else {
-      next();
     }
   } catch (err) {
     res.sendStatus(500);
   }
+  next();
 }

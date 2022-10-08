@@ -5,20 +5,20 @@ import {
   validateAvailableGame,
   setSearchQueryObject,
   validateExistingRental,
-} from "../middlewares/rental.middleware.js";
+} from '../middlewares/rental.middleware.js';
 
 import {
   getRentals,
   postNewRental,
   setRentalAsFinished,
   deleteRental,
-} from "../controllers/rental.controller.js";
+} from '../controllers/rental.controller.js';
 
-import { setOrderQuery } from "../middlewares/common.middleware.js";
+import { setQueryOptionsFromQueryStrings } from '../middlewares/common.middleware.js';
 
 const rentalsRouter = Router();
 
-rentalsRouter.get("/rentals", setOrderQuery, setSearchQueryObject, getRentals);
+rentalsRouter.get("/rentals", setQueryOptionsFromQueryStrings, setSearchQueryObject, getRentals);
 rentalsRouter.post(
   "/rentals",
   validateRentalData,

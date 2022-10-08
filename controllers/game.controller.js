@@ -1,10 +1,10 @@
-import db from "../database/db";
+import db from "../database/db.js";
 
 export async function getGames(req, res) {
-  const { name } = req.query;
+  const { queryObject } = req.locals;
 
   try {
-    const { queryObject } = res.locals;
+
     const result = await db.query(queryObject);
 
     res.send(result.rows);
