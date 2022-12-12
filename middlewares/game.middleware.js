@@ -5,10 +5,10 @@ export async function validateGame(req, res, next) {
 
   try {
     await newGameSchema.validateAsync(req.body)
-    next();
   } catch (err) {
     res.sendStatus(400);
   }
+  next();
 }
 
 export async function validateUniqueGame(req, res, next) {

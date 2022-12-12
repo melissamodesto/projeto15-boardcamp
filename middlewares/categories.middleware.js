@@ -6,18 +6,16 @@ export async function validateCategory(req, res, next) {
   try {
     await newCategorySchema.validateAsync(req.body);
   } catch (err) {
-    res.sendStatus(500);
+    res.sendStatus(400);
   }
   next();
 }
 
 export async function validateUniqueCategory(req, res, next) {
-  const { name } = req.body;
 
   try {
     const category = await db.query(
-      "SELECT * FROM categories WHERE name = $1",
-      [name]
+      `SELECT * FROM categories WHERE name = '${req.body.name}'`      
     );
 
     if (category.rowCount > 0) {
@@ -25,7 +23,7 @@ export async function validateUniqueCategory(req, res, next) {
     }
 
   } catch (err) {
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
   next();
 }
