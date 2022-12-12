@@ -15,18 +15,17 @@ export async function validateUniqueGame(req, res, next) {
   const { name, categoryId } = req.body;
 
   try {
-    const game = await db.query("SELECT * FROM games WHERE name = $1", [name]);
-    if (game.rows.length) {
-      res.sendStatus(409);
+    const game = await db.query(`SELECT * FROM categories WHERE id = ${categoryId}`);
+    
+    if (game.rowCount === 0) {
+      return res.sendStatus(400);
     }
   } catch (err) {
     res.sendStatus(500);
   }
 
   try {
-    const game = await db.query('SELECT * FROM games WHERE "categoryId" = $1', [
-      categoryId,
-    ]);
+    const game = await db.query(`SELECT * FROM games WHERE name = '${name}'`);
     if (game.rowCount > 0) {
       res.sendStatus(409);
     }

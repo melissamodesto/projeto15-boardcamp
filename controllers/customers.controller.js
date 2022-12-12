@@ -30,9 +30,9 @@ export async function postCustomer(req, res) {
 
   try {
     const customer = await db.query(
-      "INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4) RETURNING *",
+      `INSERT INTO customers (name, phone, cpf, birthday) VALUES ($1, $2, $3, $4)`,
       [name, phone, cpf, birthday]
-    );
+    )
     res.status(201).send(customer.rows[0]);
   } catch (err) {
 

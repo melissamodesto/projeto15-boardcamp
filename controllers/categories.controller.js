@@ -3,6 +3,7 @@ import db from '../database/db.js';
 export async function getCategories(req, res) {
 
   const { queryOptions } = res.locals;
+  
   const text = `SELECT * FROM categories ${queryOptions}`;
 
   try {
@@ -18,8 +19,8 @@ export async function postCategory(req, res) {
   const { name } = req.body;
 
   try {
-    const category = await db.query(
-      "INSERT INTO categories (name) VALUES ($1) RETURNING *",
+    const result = await db.query(
+      `INSERT INTO categories (name) VALUES ($1)`,
       [name]
     );
     res.sendStatus(201);

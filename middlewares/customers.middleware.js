@@ -15,7 +15,7 @@ export async function validateUniqueCustomer(req, res, next) {
   const { cpf } = req.body;
 
   try {
-    const customer = await db.query("SELECT * FROM customers WHERE cpf = $1", [
+    const customer = await db.query(`SELECT * FROM customers WHERE cpf = $1`, [
       cpf,
     ]);
     if (customer.rowCount > 0) {
@@ -70,7 +70,7 @@ export async function setUpdateQueryObject(req, res, next) {
     return res.sendStatus(400);
   }
 
-  const text = `UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5 RETURNING *`;
+  const text = `UPDATE customers SET name = $1, phone = $2, cpf = $3, birthday = $4 WHERE id = $5`;
 
   const values = [name, phone, cpf, birthday, id];
 
@@ -84,7 +84,7 @@ export async function validateCpfConflictUpdate(req, res, next) {
 
   try {
     const customer = await db.query(
-      "SELECT * FROM customers WHERE cpf = $1 AND id != $2",
+      `SELECT * FROM customers WHERE cpf = $1 AND id != $2`,
       [cpf, id]
     );
     if (customer.rowCount > 0) {
